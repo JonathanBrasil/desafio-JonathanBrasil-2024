@@ -41,14 +41,16 @@ class RecintosZoo {
         const recintosViaveis = []; //array vazia para colocar a resposta com os recintos viáveis
 
         // Verificar cada recinto
+        // Metodo for each para passar por cada recinto e verificar se pode ser ocupado pelo parametro.
         this.recintos.forEach((recinto) => {
             const espacoOcupado = recinto.animaisExistentes.reduce((total, animal) => {
                 return total + animal.quantidade * this.animais[animal.especie].tamanho;
             }, 0);
 
             // Verificar bioma compatível
+            // Se biomas(do animal) não conter no bioma do recinto e for diferente de savana e rio
             if (!biomas.includes(recinto.bioma) && recinto.bioma !== 'savana e rio') {
-                return;
+                return; //Encerra e pula para o próximo
             }
 
             // Verificar espaço disponível
@@ -57,23 +59,23 @@ class RecintosZoo {
             // Verificar regras específicas de convivência
             if (carnivoro && recinto.animaisExistentes.length > 0) {
                 const conviventes = recinto.animaisExistentes.some(animal => animal.especie !== tipoAnimal);
-                if (conviventes) return;
+                if (conviventes) return; //Encerra e pula para o próximo
             }
 
             // Verificar se o recinto tem carnívoros
             const carnívorosExistentes = recinto.animaisExistentes.some(animal => this.animais[animal.especie].carnivoro);
             if (carnívorosExistentes && !carnivoro) {
-                return;
+                return; //Encerra e pula para o próximo
             }
 
             // Verificar hipopótamos
             if (tipoAnimal === 'HIPOPOTAMO' && recinto.bioma !== 'savana e rio') {
-                return;
+                return; //Encerra e pula para o próximo
             }
 
-            // Verificar regra dos macacos
+            // Verificar regra dos macacos, que não podem ficar sozinhos
             if (tipoAnimal === 'MACACO' && recinto.animaisExistentes.length === 0 && quantidade < 2) {
-                return;
+                return; //Encerra e pula para o próximo
             }
 
             // Verificar se o espaço comporta o novo lote (com espaço extra, se for mais de uma espécie)
@@ -94,7 +96,7 @@ class RecintosZoo {
 
 }
 
-export { RecintosZoo };
+export { RecintosZoo as RecintosZoo };
 
 const zoo = new RecintosZoo();
 console.log(zoo.analisaRecintos('MACACO', 2)); //ok
