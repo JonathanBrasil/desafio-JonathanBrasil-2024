@@ -14,6 +14,13 @@ describe('Recintos do Zoologico', () => {
             expect(resultado.recintosViaveis).toBeFalsy();
     });
 
+    //acrescentado teste para verificar quantidade que não seja numeros inteiros. 
+    test('Deve rejeitar quantidade em decimais', () => {
+        const resultado = new RecintosZoo().analisaRecintos('MACACO', 1.2);
+        expect(resultado.erro).toBe("Quantidade inválida");
+        expect(resultado.recintosViaveis).toBeFalsy();
+});
+
     test('Não deve encontrar recintos para 10 macacos', () => {
             const resultado = new RecintosZoo().analisaRecintos('MACACO', 10);
             expect(resultado.erro).toBe("Não há recinto viável");
@@ -22,6 +29,14 @@ describe('Recintos do Zoologico', () => {
 
     test('Deve encontrar recinto para 1 crocodilo', () => {
         const resultado = new RecintosZoo().analisaRecintos('CROCODILO', 1);
+        expect(resultado.erro).toBeFalsy();
+        expect(resultado.recintosViaveis[0]).toBe('Recinto 4 (espaço livre: 5 total: 8)');
+        expect(resultado.recintosViaveis.length).toBe(1);
+    });
+
+        //teste com entradas em minúsculo. 
+    test('Deve encontrar recinto para 1 crocodilo com lowerCase', () => {
+        const resultado = new RecintosZoo().analisaRecintos('crocodilo', 1);
         expect(resultado.erro).toBeFalsy();
         expect(resultado.recintosViaveis[0]).toBe('Recinto 4 (espaço livre: 5 total: 8)');
         expect(resultado.recintosViaveis.length).toBe(1);
@@ -38,4 +53,6 @@ describe('Recintos do Zoologico', () => {
     });
 
 });
+
+
 
